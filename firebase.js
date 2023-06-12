@@ -4,12 +4,12 @@ import { getFirestore } from 'firebase/firestore' ;
 // import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDggkl5wvFS2GAaoUCIc7fGN8M91n19xuo",
-  authDomain: "pushnotif-1605f.firebaseapp.com",
-  projectId: "pushnotif-1605f",
-  storageBucket: "pushnotif-1605f.appspot.com",
-  messagingSenderId: "816163671479",
-  appId: "1:816163671479:web:72785e876f4fa16408ec32"
+  apiKey: "AIzaSyAzMCQfoVk1uxP4Evtd5X1y7vB65SPKxSg",
+  authDomain: "pushnotif-da12b.firebaseapp.com",
+  projectId: "pushnotif-da12b",
+  storageBucket: "pushnotif-da12b.appspot.com",
+  messagingSenderId: "945496463696",
+  appId: "1:945496463696:web:a70aae7728fe7b39e23455"
 };
 
  
