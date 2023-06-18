@@ -1,7 +1,8 @@
 
 import * as functions from "firebase-functions";
-import {updateProfileFunction} from "./profile/updateProfileFunction";
 import {onSendAllNotification} from "./notification/sendPushNotification";
+import {updateProfileFunction} from "./profile/updateProfileFunction";
+
 
 module.exports = {
   updateProfile: functions.https.onCall(updateProfileFunction),

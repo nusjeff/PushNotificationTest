@@ -2,11 +2,7 @@
   "functions": [
     {
       "source": "firebase",
-      "codebase": "default"
-    },
-    {
-      "source": "firebase",
-      "codebase": "server_notification",
+      "codebase": "default",
       "ignore": [
         "node_modules",
         ".git",

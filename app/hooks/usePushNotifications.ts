@@ -63,7 +63,7 @@ const usePushNotifications = () => {
   }, [userType, userId, expoPushToken])
 
   useEffect(() => {
-    if (userType != null && userId != null && expoPushToken.length > 0) {
+    if (userType && userId && expoPushToken && expoPushToken.length > 0) {
       onSetNotification()
     }
   }, [userType, userId, expoPushToken])

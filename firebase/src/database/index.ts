@@ -1,5 +1,8 @@
 import {getFirestore} from "firebase-admin/firestore";
 import {Profile, UpdateProfileDTO, UserType} from "../shared/interfaces";
+import {initializeApp} from "firebase-admin/app";
+
+initializeApp();
 const db = getFirestore();
 
 export const onUpdateProfile = async (data: UpdateProfileDTO) => {
