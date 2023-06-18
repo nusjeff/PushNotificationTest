@@ -1,6 +1,15 @@
 {
   "expo": {
     "scheme": "acme",
-    "web": { "bundler": "metro" }
+    "web": { "bundler": "metro" },
+    "ios": {
+      "buildNumber": "1",
+      "supportsTablet": true,
+      "bundleIdentifier": "com.pushnotif.app"
+    },
+    "android": {
+      "versionCode": 1,
+      "package": "com.pushnotif.app"  
+    }
   }
 }

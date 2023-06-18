@@ -9,20 +9,21 @@ import {db,auth} from '../../firebase' ;
 import { createUserWithEmailAndPassword,signInWithEmailAndPassword } from 'firebase/auth';
 import { doc,setDoc,addDoc,getDoc,getDocs,updateDoc,getRef,collection} from 'firebase/firestore';
 import {onSnapshot,query,where,orderBy,serverTimestamp} from 'firebase/firestore';
+import usePushNotifications from '../hooks/usePushNotifications';
 
 const receiverAccess = () => {
   const navigation = useRouter();
-  const [adminID, setAdminID] = useState("");
   const [adminName, setAdminName] = useState("");
   const [adminEmail, setAdminEmail] = useState("");
   const [adminPassword, setAdminPassword] = useState("");
+  const {setUserId, setUserType} = usePushNotifications()
 
   useEffect(() => {
     const getUserCredentials = async () => {
       auth.onAuthStateChanged(async authUser => { // marked the callback function with the async keyword
         if (authUser) {
           setAdminEmail(authUser.email);
-          setAdminID(authUser.uid);
+          setUserId(authUser.uid);
           console.log("currentUser.uid is: " + authUser.uid);
           const receiverRef = doc(collection(db, 'Receiver'), authUser.uid);
           const receiverDoc = await getDoc(receiverRef);
@@ -33,6 +34,7 @@ const receiverAccess = () => {
         }
       }); // added missing closing parenthesis here
     };
+    setUserType('Receiver')
     getUserCredentials();
   }, [auth]); // added currentUser to the dependency array
   console.log("adminPassword: ",adminPassword)
@@ -43,6 +45,7 @@ const receiverAccess = () => {
   });
 
   const onCreatePress = async (data) => {
+     onSendNotification(data)
       navigation.push(`/receiverAccess/ThankYou`);
   };
 
