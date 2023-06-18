@@ -5,10 +5,10 @@ import {getAllProfile} from "../database";
 
 const expo = new Expo({accessToken: process.env.EXPO_ACCESS_TOKEN});
 
-
 const sendPushNotification = async ({
   pushToken,
   message,
+  title,
 }: SendPushNotification): Promise<void> => {
   const messages: ExpoPushMessage[] = [];
 
@@ -16,11 +16,12 @@ const sendPushNotification = async ({
     console.error(`Push token ${pushToken} is not a valid Expo push token`);
     return;
   }
-
   messages.push({
     to: pushToken,
     sound: "default",
     body: message,
+    title: title,
+
   });
 
   try {
@@ -32,10 +33,13 @@ const sendPushNotification = async ({
 
 export const onSendAllNotification = async (input: PushNotificationsToAll) => {
   try {
-    const listProfile = await getAllProfile(input.userType);
+    const listProfile = await getAllProfile(input.userType == "Sender" ? "Receiver" : "Sender");
     listProfile.forEach((profile) => {
       if (profile.notificationToken) {
-        sendPushNotification({pushToken: profile.notificationToken, message: input.message});
+        sendPushNotification({
+          pushToken: profile.notificationToken,
+          message: input.message, title: input.title,
+        });
       }
     });
   } catch (error) {

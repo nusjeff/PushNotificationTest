@@ -2,15 +2,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
   addNotificationReceivedListener,
   addNotificationResponseReceivedListener,
-  AndroidImportance,
   removeNotificationSubscription,
-  setNotificationChannelAsync,
   setNotificationHandler,
   Subscription,
   Notification
 } from 'expo-notifications';
 import { registerForPushNotifications } from '../utils/notification';
-import { PushNotificationsToAll, UserType } from "../../firebase/src/shared/interfaces";
+import { PushNotificationsToAll, UserType } from "../../functions/src/shared/interfaces";
 import { functions } from "../services/functions";
 
 setNotificationHandler({
@@ -25,7 +23,7 @@ const usePushNotifications = () => {
   const [expoPushToken, setExpoPushToken] = useState<string>('');
   const [userId, setUserId] = useState<string | null>(null);
   const [userType, setUserType] = useState<UserType | null>(null);
-
+  const [title, setTitle] = useState<string | null>(null);
   const [notification, setNotification] = useState<Notification | null>(null);
   const notificationListener = useRef<Subscription>();
   const responseListener = useRef<Subscription>();
@@ -38,7 +36,6 @@ const usePushNotifications = () => {
 
     responseListener.current = addNotificationResponseReceivedListener(response => {
       console.log(response);
-
     });
 
     return () => {
@@ -49,17 +46,16 @@ const usePushNotifications = () => {
 
 
   const onSetNotification = useCallback(async () => {
-    try{
-      const response = await functions.updateProfile({
+    try {
+      functions.updateProfile({
         id: userId,
         notificationToken: expoPushToken,
         userType: userType
       })
-
-    }catch(e){
-      console.log("onSetNotification", e)
+    } catch (e) {
+      console.log("error", e)
     }
-   
+
   }, [userType, userId, expoPushToken])
 
   useEffect(() => {
@@ -70,19 +66,24 @@ const usePushNotifications = () => {
 
 
   const onSendNotification = useCallback(({ message }: { message: string }) => {
-    const data: PushNotificationsToAll = {
-      userType,
-      userId,
-      message
+    if (userType && userId && title && message) {
+      const data: PushNotificationsToAll = {
+        userType,
+        userId,
+        title,
+        message
+      }
+      functions.sendNotification(data)
     }
-    functions.sendNotification(data)
-  }, [])
+
+  }, [userType, userId, title])
 
 
   return {
     setUserId,
     setUserType,
-    onSendNotification
+    onSendNotification,
+    setTitle
   }
 }
 export default usePushNotifications

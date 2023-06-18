@@ -40,7 +40,6 @@ import { Alert, Platform } from "react-native";
       return undefined;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log("Final Token",token);
  
   return token;
 }

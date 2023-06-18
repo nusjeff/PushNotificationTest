@@ -16,6 +16,7 @@ export const onUpdateProfile = async (data: UpdateProfileDTO) => {
 export const getAllProfile = async (userType:UserType) =>{
   const profiles: Profile[] = [];
   const userList = await db.collection(userType).get();
+
   userList.docs.forEach((doc) =>{
     if (doc.data()) {
       profiles.push(doc.data() as Profile);

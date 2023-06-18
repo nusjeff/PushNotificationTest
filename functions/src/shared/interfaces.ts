@@ -33,6 +33,7 @@ export interface Profile {
 export type SendPushNotification = {
   pushToken: string;
   message: string;
+  title: string
 };
 
 
@@ -40,5 +41,6 @@ export type PushNotificationsToAll = {
   userType: UserType
   userId: string,
   message: string,
+  title: string
 }
 

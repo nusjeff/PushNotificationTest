@@ -1,22 +1,19 @@
-import React, {useEffect,useState} from 'react';
-import { useRouter, Link, Redirect,useSearchParams} from 'expo-router';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import {View,Text,Image,Button,StyleSheet,ScrollView,KeyboardAvoidingView} from 'react-native';
-import CustomInput from './CustomInput';
-import CustomButton from './CustomButton';
-import { useForm, Controller} from 'react-hook-form' ; 
-import {db,auth} from '../../firebase' ; 
-import { createUserWithEmailAndPassword,signInWithEmailAndPassword } from 'firebase/auth';
-import { doc,setDoc,addDoc,getDoc,getDocs,updateDoc,getRef,collection} from 'firebase/firestore';
-import {onSnapshot,query,where,orderBy,serverTimestamp} from 'firebase/firestore';
+import { useRouter } from 'expo-router';
+import { collection, doc, getDoc } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { auth, db } from '../../firebase';
 import usePushNotifications from '../hooks/usePushNotifications';
+import CustomButton from './CustomButton';
+import CustomInput from './CustomInput';
 
 const receiverAccess = () => {
   const navigation = useRouter();
   const [adminName, setAdminName] = useState("");
   const [adminEmail, setAdminEmail] = useState("");
   const [adminPassword, setAdminPassword] = useState("");
-  const {setUserId, setUserType} = usePushNotifications()
+  const {setUserId, setUserType, setTitle, onSendNotification} = usePushNotifications()
 
   useEffect(() => {
     const getUserCredentials = async () => {
@@ -31,6 +28,8 @@ const receiverAccess = () => {
           const adminPassword = receiverDoc?.data()?.pin;
           setAdminName(adminName);          
           setAdminPassword(adminPassword);
+          setTitle(`You got message from ${adminName}`)
+
         }
       }); // added missing closing parenthesis here
     };
@@ -45,7 +44,10 @@ const receiverAccess = () => {
   });
 
   const onCreatePress = async (data) => {
-     onSendNotification(data)
+    if(data?.name){
+      onSendNotification({message: data.name})
+
+    }
       navigation.push(`/receiverAccess/ThankYou`);
   };
 

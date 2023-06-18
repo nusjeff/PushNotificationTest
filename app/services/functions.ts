@@ -1,4 +1,4 @@
-import * as I from "../../firebase/src/shared/interfaces";
+import * as I from "../../functions/src/shared/interfaces";
 import { getFunctions, httpsCallable } from "firebase/functions";
 
 const dtoResult = <DTO, Result>() => ({} as (dto: DTO) => CloudFunctionResult<Result>)
